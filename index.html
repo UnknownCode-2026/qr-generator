@@ -22,35 +22,6 @@
 <body>
 
 <div class="app-container">
-  <!-- MAIN CANVAS PREVIEW (ย้ายขึ้นมาไว้บนสุด / หรือใกล้กันตามต้องการ) -->
-  <main class="preview-stage">
-    <div class="stage-card">
-      <div class="stage-header">
-        <div class="status-indicator good" id="status">
-          <span class="pulse-dot"></span>
-          <span id="status-text">พร้อมดาวน์โหลด</span>
-        </div>
-      </div>
-
-      <div class="canvas-wrapper" id="preview-card">
-        <canvas id="qr-canvas"></canvas>
-        <div class="empty-state" id="empty-msg" style="display:none;">
-          <i class="ph ph-warning-circle"></i>
-          <p>กรุณากรอกข้อมูลเพื่อสร้าง QR Code</p>
-        </div>
-      </div>
-
-      <div class="action-bar">
-        <button class="btn btn-primary" id="btn-png" disabled>
-          <i class="ph ph-download-simple"></i>
-          <span>บันทึกรูปภาพ (PNG)</span>
-        </button>
-      </div>
-      
-      <div class="footer-note" id="ui-footer"></div>
-    </div>
-  </main>
-
   <!-- SIDEBAR CONFIGURATOR -->
   <aside class="sidebar">
     <div class="brand-header">
@@ -247,7 +218,39 @@
         </div>
       </div>
     </section>
+  </aside>
 
+  <!-- MAIN CANVAS PREVIEW (ย้ายมาแทรกอยู่ตรงกลาง ระหว่างรูปทรง และโลโก้) -->
+  <main class="preview-stage">
+    <div class="stage-card">
+      <div class="stage-header">
+        <div class="status-indicator good" id="status">
+          <span class="pulse-dot"></span>
+          <span id="status-text">พร้อมดาวน์โหลด</span>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper" id="preview-card">
+        <canvas id="qr-canvas"></canvas>
+        <div class="empty-state" id="empty-msg" style="display:none;">
+          <i class="ph ph-warning-circle"></i>
+          <p>กรุณากรอกข้อมูลเพื่อสร้าง QR Code</p>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn btn-primary" id="btn-png" disabled>
+          <i class="ph ph-download-simple"></i>
+          <span>บันทึกรูปภาพ (PNG)</span>
+        </button>
+      </div>
+      
+      <div class="footer-note" id="ui-footer"></div>
+    </div>
+  </main>
+
+  <!-- SIDEBAR PART 2 (สำหรับส่วนโลโก้และความละเอียดที่อยู่ด้านล่างพรีวิว) -->
+  <aside class="sidebar" style="border-right: none; border-left: 1px solid var(--border-color);">
     <!-- STEP 4: LOGO & EXPORT -->
     <section class="config-section">
       <div class="section-header">
