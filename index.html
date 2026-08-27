@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="doc-title">QR Studio Pro</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- External CSS -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- QR Generator Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- SIDEBAR CONFIGURATOR -->
+  <aside class="sidebar">
+    <div class="brand-header">
+      <div class="brand-icon">
+        <span class="square-dot"></span>
+      </div>
+      <div class="brand-title">
+        <span id="ui-brand-name">QR Studio</span>
+        <span class="badge" id="ui-badge">PRO</span>
+      </div>
+    </div>
+
+    <!-- STEP 1: PRESETS & CONTENT -->
+    <section class="config-section">
+      <div class="section-header">
+        <span class="step-num">01</span>
+        <h2>เนื้อหา & ธีมสำเร็จรูป</h2>
+      </div>
+
+      <label class="field-label">ธีมสียอดนิยม</label>
+      <div class="preset-grid">
+        <button class="preset-btn active" data-preset="cyber" style="--p-color: #7C5CFF;"></button>
+        <button class="preset-btn" data-preset="emerald" style="--p-color: #10B981;"></button>
+        <button class="preset-btn" data-preset="sunset" style="--p-color: #F59E0B;"></button>
+        <button class="preset-btn" data-preset="rose" style="--p-color: #F43F5E;"></button>
+      </div>
+
+      <label class="field-label" style="margin-top: 14px;">ประเภทข้อมูล</label>
+      <div class="tabs-nav" id="type-tabs">
+        <button class="tab-btn active" data-type="url">URL</button>
+        <button class="tab-btn" data-type="text">ข้อความ</button>
+        <button class="tab-btn" data-type="wifi">Wi-Fi</button>
+        <button class="tab-btn" data-type="phone">เบอร์โทร</button>
+        <button class="tab-btn" data-type="sms">SMS</button>
+        <button class="tab-btn" data-type="vcard">นามบัตร</button>
+      </div>
+
+      <!-- Content Inputs -->
+      <div class="content-pane active" data-pane="url">
+        <div class="input-group">
+          <label>URL เว็บไซต์ / ลิงก์ร้าน</label>
+          <input type="url" id="f-url" placeholder="https://example.com">
+        </div>
+      </div>
+
+      <div class="content-pane" data-pane="text">
+        <div class="input-group">
+          <label>ข้อความ</label>
+          <textarea id="f-text" placeholder="พิมพ์ข้อความที่ต้องการที่นี่..."></textarea>
+        </div>
+      </div>
+
+      <div class="content-pane" data-pane="wifi">
+        <div class="input-group">
+          <label>ชื่อเครือข่าย WiFi (SSID)</label>
+          <input type="text" id="f-wifi-ssid" placeholder="WiFi_Name">
+        </div>
+        <div class="input-group">
+          <label>รหัสผ่าน WiFi</label>
+          <input type="text" id="f-wifi-pass" placeholder="••••••••">
+        </div>
+        <div class="input-group">
+          <label>ระบบความปลอดภัย</label>
+          <select id="f-wifi-enc">
+            <option value="WPA">WPA / WPA2 / WPA3</option>
+            <option value="WEP">WEP</option>
+            <option value="nopass">ไม่ใช้รหัสผ่าน</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="content-pane" data-pane="phone">
+        <div class="input-group">
+          <label>หมายเลขโทรศัพท์</label>
+          <input type="tel" id="f-phone" placeholder="0812345678">
+        </div>
+      </div>
+
+      <div class="content-pane" data-pane="sms">
+        <div class="input-group">
+          <label>หมายเลขโทรศัพท์</label>
+          <input type="tel" id="f-sms-phone" placeholder="0812345678">
+        </div>
+        <div class="input-group">
+          <label>ข้อความ SMS</label>
+          <textarea id="f-sms-text"></textarea>
+        </div>
+      </div>
+
+      <div class="content-pane" data-pane="vcard">
+        <div class="input-row">
+          <div class="input-group">
+            <label>ชื่อ-นามสกุล</label>
+            <input type="text" id="f-vc-first">
+          </div>
+        </div>
+        <div class="input-group">
+          <label>ชื่อร้าน / องค์กร</label>
+          <input type="text" id="f-vc-org">
+        </div>
+        <div class="input-group">
+          <label>เบอร์โทรศัพท์</label>
+          <input type="tel" id="f-vc-phone">
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: COLORS -->
+    <section class="config-section">
+      <div class="section-header">
+        <span class="step-num">02</span>
+        <h2>ปรับแต่งสีสัน</h2>
+      </div>
+
+      <div class="segmented-control">
+        <button class="active" data-fgmode="solid">สีเดี่ยว</button>
+        <button data-fgmode="gradient">ไล่โทนสี</button>
+      </div>
+
+      <div class="color-picker-list">
+        <div class="color-picker-item">
+          <input type="color" id="c-fg1" value="#7C5CFF">
+          <label for="c-fg1">สีหลักลวดลาย</label>
+        </div>
+        <div class="color-picker-item" id="row-fg2" style="display:none;">
+          <input type="color" id="c-fg2" value="#2FD180">
+          <label for="c-fg2">สีไล่ระดับ</label>
+        </div>
+        <div class="color-picker-item">
+          <input type="color" id="c-eye-frame" value="#FFFFFF">
+          <label for="c-eye-frame">สีกรอบมุม (Eye Frame)</label>
+        </div>
+        <div class="color-picker-item">
+          <input type="color" id="c-eye-ball" value="#7C5CFF">
+          <label for="c-eye-ball">สีจุดกลางมุม (Eye Ball)</label>
+        </div>
+        <div class="color-picker-item">
+          <input type="color" id="c-bg" value="#0F0F15">
+          <label for="c-bg">สีพื้นหลัง</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: SHAPES -->
+    <section class="config-section">
+      <div class="section-header">
+        <span class="step-num">03</span>
+        <h2>รูปแบบและรูปทรง</h2>
+      </div>
+
+      <label class="field-label">รูปแบบลวดลาย</label>
+      <div class="shape-grid" id="dot-shapes">
+        <div class="shape-card active" data-dot="square">
+          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" fill="currentColor"/></svg>
+          <span>เหลี่ยม</span>
+        </div>
+        <div class="shape-card" data-dot="dots">
+          <svg width="24" height="24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
+          <span>วงกลม</span>
+        </div>
+        <div class="shape-card" data-dot="rounded">
+          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" rx="5" fill="currentColor"/></svg>
+          <span>มน</span>
+        </div>
+      </div>
+
+      <label class="field-label">กรอบตา</label>
+      <div class="shape-grid" id="eyeframe-shapes">
+        <div class="shape-card active" data-eyeframe="square">
+          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+          <span>เหลี่ยม</span>
+        </div>
+        <div class="shape-card" data-eyeframe="rounded">
+          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+          <span>มน</span>
+        </div>
+        <div class="shape-card" data-eyeframe="circle">
+          <svg width="24" height="24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+          <span>วงกลม</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: LOGO & EXPORT -->
+    <section class="config-section">
+      <div class="section-header">
+        <span class="step-num">04</span>
+        <h2>โลโก้และความละเอียด</h2>
+      </div>
+
+      <div class="drop-zone" id="upload-box">
+        <div class="drop-zone-icon">📁</div>
+        <p>อัปโหลดโลโก้ (PNG, JPG, SVG)</p>
+        <small id="upload-limit-text">ขนาดไม่เกิน 2MB</small>
+      </div>
+      <input type="file" id="logo-input" accept="image/*" style="display:none;">
+
+      <div class="logo-preview-card" id="logo-preview-row" style="display:none;">
+        <img id="logo-preview-img" src="" alt="Logo Preview" style="width: 32px; height: 32px; border-radius: 4px; object-fit: cover;">
+        <span id="logo-preview-name" style="flex: 1; font-size: 12px; margin-left: 10px;">logo.png</span>
+        <button id="logo-remove" style="background: none; border: none; color: var(--danger); cursor: pointer;">ลบออก</button>
+      </div>
+
+      <label class="checkbox-container">
+        <input type="checkbox" id="logo-knockout" checked>
+        <span class="checkmark"></span>
+        เว้นกรอบหลังโลโก้ (สแกนง่ายขึ้น)
+      </label>
+
+      <div class="range-group">
+        <div class="range-header">
+          <label>ความละเอียดไฟล์ภาพ</label>
+          <span id="res-value">1000 × 1000 px</span>
+        </div>
+        <input type="range" id="res-slider" min="300" max="2400" step="100" value="1000">
+      </div>
+    </section>
+  </aside>
+
+  <!-- MAIN CANVAS PREVIEW -->
+  <main class="preview-stage">
+    <div class="stage-card">
+      <div class="stage-header">
+        <div class="status-indicator good" id="status">
+          <span class="pulse-dot"></span>
+          <span id="status-text">พร้อมดาวน์โหลด</span>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper" id="preview-card">
+        <canvas id="qr-canvas"></canvas>
+        <div class="empty-state" id="empty-msg" style="display:none; color: var(--text-muted);">
+          <p>กรุณากรอกข้อมูลด้านซ้ายเพื่อสร้าง QR Code</p>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn btn-primary" id="btn-png" disabled>
+          <span>ดาวน์โหลด PNG</span>
+        </button>
+      </div>
+      
+      <div class="footer-note" id="ui-footer" style="margin-top: 20px; text-align: center; font-size: 10px; color: var(--text-muted);">
+        <!-- Footer text from config -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Scripts -->
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
