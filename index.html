@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="doc-title">QR Studio Pro</title>
   
-  <!-- Fonts & Icons -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Phosphor Icons (Professional Icon Set) -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
   <!-- External CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -23,7 +26,7 @@
   <aside class="sidebar">
     <div class="brand-header">
       <div class="brand-icon">
-        <span class="square-dot"></span>
+        <i class="ph ph-qr-code"></i>
       </div>
       <div class="brand-title">
         <span id="ui-brand-name">QR Studio</span>
@@ -31,36 +34,30 @@
       </div>
     </div>
 
-    <!-- STEP 1: PRESETS & CONTENT -->
+    <!-- STEP 1: CONTENT -->
     <section class="config-section">
       <div class="section-header">
         <span class="step-num">01</span>
-        <h2>เนื้อหา & ธีมสำเร็จรูป</h2>
+        <h2>เนื้อหาข้อมูล</h2>
       </div>
 
-      <label class="field-label">ธีมสียอดนิยม</label>
-      <div class="preset-grid">
-        <button class="preset-btn active" data-preset="cyber" style="--p-color: #7C5CFF;"></button>
-        <button class="preset-btn" data-preset="emerald" style="--p-color: #10B981;"></button>
-        <button class="preset-btn" data-preset="sunset" style="--p-color: #F59E0B;"></button>
-        <button class="preset-btn" data-preset="rose" style="--p-color: #F43F5E;"></button>
-      </div>
-
-      <label class="field-label" style="margin-top: 14px;">ประเภทข้อมูล</label>
       <div class="tabs-nav" id="type-tabs">
-        <button class="tab-btn active" data-type="url">URL</button>
-        <button class="tab-btn" data-type="text">ข้อความ</button>
-        <button class="tab-btn" data-type="wifi">Wi-Fi</button>
-        <button class="tab-btn" data-type="phone">เบอร์โทร</button>
-        <button class="tab-btn" data-type="sms">SMS</button>
-        <button class="tab-btn" data-type="vcard">นามบัตร</button>
+        <button class="tab-btn active" data-type="url"><i class="ph ph-link"></i> URL</button>
+        <button class="tab-btn" data-type="text"><i class="ph ph-text-t"></i> ข้อความ</button>
+        <button class="tab-btn" data-type="wifi"><i class="ph ph-wifi-high"></i> Wi-Fi</button>
+        <button class="tab-btn" data-type="phone"><i class="ph ph-phone"></i> เบอร์โทร</button>
+        <button class="tab-btn" data-type="sms"><i class="ph ph-chat-text"></i> SMS</button>
+        <button class="tab-btn" data-type="vcard"><i class="ph ph-identification-card"></i> นามบัตร</button>
       </div>
 
       <!-- Content Inputs -->
       <div class="content-pane active" data-pane="url">
         <div class="input-group">
           <label>URL เว็บไซต์ / ลิงก์ร้าน</label>
-          <input type="url" id="f-url" placeholder="https://example.com">
+          <div class="input-wrapper">
+            <i class="ph ph-globe"></i>
+            <input type="url" id="f-url" placeholder="https://example.com">
+          </div>
         </div>
       </div>
 
@@ -73,12 +70,18 @@
 
       <div class="content-pane" data-pane="wifi">
         <div class="input-group">
-          <label>ชื่อเครือข่าย WiFi (SSID)</label>
-          <input type="text" id="f-wifi-ssid" placeholder="WiFi_Name">
+          <label>ชื่อเครือข่าย (SSID)</label>
+          <div class="input-wrapper">
+            <i class="ph ph-router"></i>
+            <input type="text" id="f-wifi-ssid" placeholder="WiFi_Name">
+          </div>
         </div>
         <div class="input-group">
-          <label>รหัสผ่าน WiFi</label>
-          <input type="text" id="f-wifi-pass" placeholder="••••••••">
+          <label>รหัสผ่าน</label>
+          <div class="input-wrapper">
+            <i class="ph ph-lock-key"></i>
+            <input type="text" id="f-wifi-pass" placeholder="••••••••">
+          </div>
         </div>
         <div class="input-group">
           <label>ระบบความปลอดภัย</label>
@@ -93,55 +96,75 @@
       <div class="content-pane" data-pane="phone">
         <div class="input-group">
           <label>หมายเลขโทรศัพท์</label>
-          <input type="tel" id="f-phone" placeholder="0812345678">
+          <div class="input-wrapper">
+            <i class="ph ph-phone-call"></i>
+            <input type="tel" id="f-phone" placeholder="0812345678">
+          </div>
         </div>
       </div>
 
       <div class="content-pane" data-pane="sms">
         <div class="input-group">
           <label>หมายเลขโทรศัพท์</label>
-          <input type="tel" id="f-sms-phone" placeholder="0812345678">
+          <div class="input-wrapper">
+            <i class="ph ph-device-mobile"></i>
+            <input type="tel" id="f-sms-phone" placeholder="0812345678">
+          </div>
         </div>
         <div class="input-group">
           <label>ข้อความ SMS</label>
-          <textarea id="f-sms-text"></textarea>
+          <textarea id="f-sms-text" placeholder="พิมพ์ข้อความ..."></textarea>
         </div>
       </div>
 
       <div class="content-pane" data-pane="vcard">
-        <div class="input-row">
-          <div class="input-group">
-            <label>ชื่อ-นามสกุล</label>
-            <input type="text" id="f-vc-first">
+        <div class="input-group">
+          <label>ชื่อ-นามสกุล</label>
+          <div class="input-wrapper">
+            <i class="ph ph-user"></i>
+            <input type="text" id="f-vc-first" placeholder="ชื่อ นามสกุล">
           </div>
         </div>
         <div class="input-group">
           <label>ชื่อร้าน / องค์กร</label>
-          <input type="text" id="f-vc-org">
+          <div class="input-wrapper">
+            <i class="ph ph-buildings"></i>
+            <input type="text" id="f-vc-org" placeholder="ชื่อบริษัท">
+          </div>
         </div>
         <div class="input-group">
           <label>เบอร์โทรศัพท์</label>
-          <input type="tel" id="f-vc-phone">
+          <div class="input-wrapper">
+            <i class="ph ph-phone"></i>
+            <input type="tel" id="f-vc-phone" placeholder="0812345678">
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- STEP 2: COLORS -->
+    <!-- STEP 2: STYLING -->
     <section class="config-section">
       <div class="section-header">
         <span class="step-num">02</span>
-        <h2>ปรับแต่งสีสัน</h2>
+        <h2>ธีมและสีสัน</h2>
       </div>
 
-      <div class="segmented-control">
-        <button class="active" data-fgmode="solid">สีเดี่ยว</button>
-        <button data-fgmode="gradient">ไล่โทนสี</button>
+      <div class="preset-grid">
+        <button class="preset-btn active" data-preset="cyber" style="--p-color: #7C5CFF;" title="Neon Cyber"></button>
+        <button class="preset-btn" data-preset="emerald" style="--p-color: #10B981;" title="Emerald Green"></button>
+        <button class="preset-btn" data-preset="sunset" style="--p-color: #F59E0B;" title="Sunset Glow"></button>
+        <button class="preset-btn" data-preset="rose" style="--p-color: #F43F5E;" title="Rose Pink"></button>
+      </div>
+
+      <div class="segmented-control" style="margin-top: 15px;">
+        <button class="active" data-fgmode="solid">สีทึบ (Solid)</button>
+        <button data-fgmode="gradient">ไล่สี (Gradient)</button>
       </div>
 
       <div class="color-picker-list">
         <div class="color-picker-item">
           <input type="color" id="c-fg1" value="#7C5CFF">
-          <label for="c-fg1">สีหลักลวดลาย</label>
+          <label for="c-fg1">สีหลัก (ลวดลาย)</label>
         </div>
         <div class="color-picker-item" id="row-fg2" style="display:none;">
           <input type="color" id="c-fg2" value="#2FD180">
@@ -166,38 +189,32 @@
     <section class="config-section">
       <div class="section-header">
         <span class="step-num">03</span>
-        <h2>รูปแบบและรูปทรง</h2>
+        <h2>รูปทรง (Shapes)</h2>
       </div>
 
       <label class="field-label">รูปแบบลวดลาย</label>
       <div class="shape-grid" id="dot-shapes">
         <div class="shape-card active" data-dot="square">
-          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" fill="currentColor"/></svg>
-          <span>เหลี่ยม</span>
+          <i class="ph-fill ph-squares-four"></i><span>เหลี่ยม</span>
         </div>
         <div class="shape-card" data-dot="dots">
-          <svg width="24" height="24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
-          <span>วงกลม</span>
+          <i class="ph-fill ph-circles-four"></i><span>วงกลม</span>
         </div>
         <div class="shape-card" data-dot="rounded">
-          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" rx="5" fill="currentColor"/></svg>
-          <span>มน</span>
+          <i class="ph-fill ph-app-window"></i><span>มน</span>
         </div>
       </div>
 
-      <label class="field-label">กรอบตา</label>
+      <label class="field-label">รูปแบบกรอบมุมตา</label>
       <div class="shape-grid" id="eyeframe-shapes">
         <div class="shape-card active" data-eyeframe="square">
-          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"/></svg>
-          <span>เหลี่ยม</span>
+          <i class="ph ph-square"></i><span>เหลี่ยม</span>
         </div>
         <div class="shape-card" data-eyeframe="rounded">
-          <svg width="24" height="24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="3"/></svg>
-          <span>มน</span>
+          <i class="ph ph-bounding-box"></i><span>มน</span>
         </div>
         <div class="shape-card" data-eyeframe="circle">
-          <svg width="24" height="24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="3"/></svg>
-          <span>วงกลม</span>
+          <i class="ph ph-circle"></i><span>วงกลม</span>
         </div>
       </div>
     </section>
@@ -210,30 +227,30 @@
       </div>
 
       <div class="drop-zone" id="upload-box">
-        <div class="drop-zone-icon">📁</div>
-        <p>อัปโหลดโลโก้ (PNG, JPG, SVG)</p>
-        <small id="upload-limit-text">ขนาดไม่เกิน 2MB</small>
+        <i class="ph ph-cloud-arrow-up drop-zone-icon"></i>
+        <p>คลิกเพื่ออัปโหลดโลโก้ร้าน</p>
+        <small id="upload-limit-text">ขนาดไม่เกิน 2MB (PNG, JPG)</small>
       </div>
       <input type="file" id="logo-input" accept="image/*" style="display:none;">
 
       <div class="logo-preview-card" id="logo-preview-row" style="display:none;">
-        <img id="logo-preview-img" src="" alt="Logo Preview" style="width: 32px; height: 32px; border-radius: 4px; object-fit: cover;">
-        <span id="logo-preview-name" style="flex: 1; font-size: 12px; margin-left: 10px;">logo.png</span>
-        <button id="logo-remove" style="background: none; border: none; color: var(--danger); cursor: pointer;">ลบออก</button>
+        <img id="logo-preview-img" src="" alt="Logo Preview">
+        <span id="logo-preview-name">logo.png</span>
+        <button id="logo-remove"><i class="ph ph-trash"></i> ลบ</button>
       </div>
 
       <label class="checkbox-container">
         <input type="checkbox" id="logo-knockout" checked>
         <span class="checkmark"></span>
-        เว้นกรอบหลังโลโก้ (สแกนง่ายขึ้น)
+        เว้นกรอบหลังโลโก้ (ทำให้สแกนติดง่ายขึ้น)
       </label>
 
       <div class="range-group">
         <div class="range-header">
           <label>ความละเอียดไฟล์ภาพ</label>
-          <span id="res-value">1000 × 1000 px</span>
+          <span id="res-value" class="res-badge">1000 × 1000 px</span>
         </div>
-        <input type="range" id="res-slider" min="300" max="2400" step="100" value="1000">
+        <input type="range" id="res-slider" min="500" max="2400" step="100" value="1000">
       </div>
     </section>
   </aside>
@@ -250,25 +267,24 @@
 
       <div class="canvas-wrapper" id="preview-card">
         <canvas id="qr-canvas"></canvas>
-        <div class="empty-state" id="empty-msg" style="display:none; color: var(--text-muted);">
-          <p>กรุณากรอกข้อมูลด้านซ้ายเพื่อสร้าง QR Code</p>
+        <div class="empty-state" id="empty-msg" style="display:none;">
+          <i class="ph ph-warning-circle"></i>
+          <p>กรุณากรอกข้อมูลเพื่อสร้าง QR Code</p>
         </div>
       </div>
 
       <div class="action-bar">
         <button class="btn btn-primary" id="btn-png" disabled>
-          <span>ดาวน์โหลด PNG</span>
+          <i class="ph ph-download-simple"></i>
+          <span>บันทึกรูปภาพ (PNG)</span>
         </button>
       </div>
       
-      <div class="footer-note" id="ui-footer" style="margin-top: 20px; text-align: center; font-size: 10px; color: var(--text-muted);">
-        <!-- Footer text from config -->
-      </div>
+      <div class="footer-note" id="ui-footer"></div>
     </div>
   </main>
 </div>
 
-<!-- Scripts -->
 <script src="config.js"></script>
 <script src="script.js"></script>
 </body>
