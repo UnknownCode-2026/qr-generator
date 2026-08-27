@@ -1,4 +1,6 @@
-# qr-generator by claude code
+## qr-generator 
+# สร้างโดย claude code
+
 ฟีเจอร์ที่ใส่ไว้:
 7 ประเภทเนื้อหา: URL, ข้อความ, อีเมล, โทรศัพท์, SMS, WiFi, vCard
 ปรับสี: สีเดียว/ไล่ระดับสีของลวดลาย, สีกรอบตา/qr-generator, สีพื้นหลัง
