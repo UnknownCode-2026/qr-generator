@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="doc-title">QR Studio Pro — NextGen QR Generator</title>
+  <title>QR Studio Pro — NextGen QR Generator</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,11 +13,284 @@
   <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
-  <!-- External CSS -->
-  <link rel="stylesheet" href="styles.css">
-  
   <!-- QR Generator Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+
+  <style>
+    /* --- Global Theme Variables (Dark Mode Default) --- */
+    :root {
+      --bg-main: #0B0B0F;
+      --panel-bg: rgba(22, 22, 30, 0.75);
+      --panel-card: #1C1C26;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.18);
+      
+      --text-main: #F9FAFB;
+      --text-muted: #9CA3AF;
+      
+      --accent: #7C5CFF;
+      --accent-glow: rgba(124, 92, 255, 0.35);
+      --accent-hover: #6944FF;
+      
+      --good: #10B981;
+      --danger: #EF4444;
+      --warning: #F59E0B;
+      
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* --- Light Mode Variables --- */
+    [data-theme="light"] {
+      --bg-main: #F3F4F6;
+      --panel-bg: rgba(255, 255, 255, 0.85);
+      --panel-card: #FFFFFF;
+      --border-color: rgba(0, 0, 0, 0.08);
+      --border-hover: rgba(0, 0, 0, 0.16);
+      
+      --text-main: #1F2937;
+      --text-muted: #6B7280;
+      
+      --accent: #6366F1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-hover: #4F46E5;
+      
+      --good: #059669;
+      --danger: #DC2626;
+      --warning: #D97706;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 10px; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      background-image: 
+        radial-gradient(at 0% 0%, var(--accent-glow) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.04) 0px, transparent 50%);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Layout: 3 Columns for Desktop */
+    .app-container {
+      display: grid;
+      grid-template-columns: 380px 420px 380px;
+      justify-content: center;
+      gap: 24px;
+      padding: 32px 20px;
+      max-width: 1440px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    .sidebar, .preview-stage-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .brand-header { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      margin-bottom: 8px; 
+    }
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--accent), #10B981);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 20px var(--accent-glow);
+      font-size: 22px; color: #fff;
+    }
+    .brand-title { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 20px; letter-spacing: -0.5px;}
+    .badge { font-size: 10px; background: var(--accent-glow); color: var(--accent); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--accent); font-weight: 600;}
+
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+      background: var(--panel-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .theme-toggle-btn:hover {
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    /* Config Section Cards */
+    .config-section {
+      background: var(--panel-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      transition: var(--transition);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+      backdrop-filter: blur(10px);
+    }
+    .config-section:hover { border-color: var(--border-hover); }
+
+    .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .step-num {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+      color: var(--accent); background: var(--accent-glow);
+      padding: 3px 8px; border-radius: 20px;
+    }
+    .section-header h2 { font-size: 14px; font-weight: 600; }
+
+    .field-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+
+    /* Tabs */
+    .tabs-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .tab-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-main); border: 1px solid var(--border-color);
+      color: var(--text-muted); padding: 6px 12px; border-radius: var(--radius-sm); 
+      font-size: 12px; font-weight: 500; cursor: pointer; transition: var(--transition);
+    }
+    .tab-btn.active, .tab-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 12px var(--accent-glow); }
+
+    /* Inputs */
+    .input-group { margin-bottom: 12px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+    .input-wrapper { position: relative; display: flex; align-items: center; }
+    .input-wrapper i { position: absolute; left: 12px; color: var(--text-muted); font-size: 16px; }
+    .input-wrapper input { padding-left: 38px !important; }
+
+    .input-group input, .input-group textarea, .input-group select {
+      width: 100%; background: var(--bg-main); border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text-main); font-size: 13px; outline: none; transition: var(--transition);
+    }
+    .input-group textarea { min-height: 70px; resize: vertical; }
+    .input-group input:focus, .input-group textarea:focus, .input-group select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    .content-pane { display: none; animation: fadeIn 0.25s ease; }
+    .content-pane.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Preset & Colors */
+    .preset-grid { display: flex; gap: 10px; }
+    .preset-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--p-color); border: 2px solid transparent; cursor: pointer; transition: var(--transition);
+    }
+    .preset-btn:hover, .preset-btn.active { transform: scale(1.15); border-color: var(--text-main); box-shadow: 0 0 12px var(--p-color); }
+
+    .color-picker-list { display: flex; flex-direction: column; gap: 10px; }
+    .color-picker-item { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--text-main); }
+    .color-picker-item input[type="color"] { -webkit-appearance: none; width: 32px; height: 32px; border: none; border-radius: 50%; cursor: pointer; background: none; }
+    .color-picker-item input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-picker-item input[type="color"]::-webkit-color-swatch { border: 2px solid var(--border-color); border-radius: 50%; }
+
+    /* Shapes & Decorations */
+    .shape-grid, .decor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+    .shape-card, .decor-card { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 10px 6px; text-align: center; cursor: pointer; transition: var(--transition); }
+    .shape-card i, .decor-card i { font-size: 22px; color: var(--text-muted); transition: var(--transition); }
+    .shape-card span, .decor-card span { display: block; font-size: 11px; font-weight: 500; margin-top: 4px; color: var(--text-muted); }
+    .shape-card.active, .shape-card:hover, .decor-card.active, .decor-card:hover { border-color: var(--accent); background: var(--accent-glow); }
+    .shape-card.active i, .shape-card.active span, .decor-card.active i, .decor-card.active span { color: var(--accent); }
+
+    /* Dropzone */
+    .drop-zone { border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 16px; text-align: center; cursor: pointer; transition: var(--transition); background: var(--bg-main); }
+    .drop-zone:hover { border-color: var(--accent); }
+    .drop-zone-icon { font-size: 28px; color: var(--accent); margin-bottom: 4px; }
+    .drop-zone p { font-size: 12px; font-weight: 500; color: var(--text-main); }
+
+    /* Preview Stage */
+    .preview-stage {
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    .stage-card {
+      background: var(--panel-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(20px);
+    }
+    .stage-header { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+    .status-indicator { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.1); color: var(--good); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+
+    .canvas-wrapper { 
+      background: var(--bg-main); 
+      border-radius: var(--radius-lg); 
+      padding: 20px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      aspect-ratio: 1 / 1; 
+      width: 100%;
+      border: 1px solid var(--border-color); 
+      position: relative; 
+      overflow: hidden; 
+    }
+
+    #qr-canvas { width: 100%; height: auto; max-width: 100%; border-radius: 10px; }
+
+    .action-bar { display: flex; margin-top: 24px; }
+    .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; border-radius: var(--radius-md); font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: var(--transition); }
+    .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 6px 20px var(--accent-glow); }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Responsive Mobile Design */
+    @media (max-width: 768px) {
+      .app-container {
+        display: flex;
+        flex-direction: column;
+        padding: 12px;
+        gap: 16px;
+      }
+      .preview-stage {
+        position: relative;
+        top: 0;
+        order: -1; 
+        width: 100%;
+      }
+      .action-bar {
+        position: sticky;
+        bottom: 12px;
+        z-index: 10;
+        background: var(--panel-card);
+        padding: 8px;
+        border-radius: var(--radius-lg);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        border: 1px solid var(--border-color);
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -29,30 +302,23 @@
       <div class="brand-left">
         <div class="brand-icon"><i class="ph ph-qr-code"></i></div>
         <div class="brand-title">
-          <span id="ui-brand-name">QR Studio</span>
-          <span class="badge" id="ui-badge">PRO</span>
+          <span>QR Studio</span>
+          <span class="badge">PRO</span>
         </div>
       </div>
-      <!-- Theme Switcher Button -->
       <button class="theme-toggle-btn" id="theme-toggle" title="สลับโหมดสว่าง/มืด">
         <i class="ph ph-moon" id="theme-icon"></i>
       </button>
     </div>
 
-    <!-- STEP 1: CONTENT -->
     <section class="config-section">
-      <div class="section-header">
-        <span class="step-num">01</span>
-        <h2>เนื้อหาข้อมูล</h2>
-      </div>
+      <div class="section-header"><span class="step-num">01</span><h2>เนื้อหาข้อมูล</h2></div>
 
       <div class="tabs-nav" id="type-tabs">
         <button class="tab-btn active" data-type="url"><i class="ph ph-link"></i> URL</button>
         <button class="tab-btn" data-type="text"><i class="ph ph-text-t"></i> ข้อความ</button>
         <button class="tab-btn" data-type="wifi"><i class="ph ph-wifi-high"></i> Wi-Fi</button>
         <button class="tab-btn" data-type="phone"><i class="ph ph-phone"></i> เบอร์โทร</button>
-        <button class="tab-btn" data-type="sms"><i class="ph ph-chat-text"></i> SMS</button>
-        <button class="tab-btn" data-type="vcard"><i class="ph ph-identification-card"></i> นามบัตร</button>
       </div>
 
       <div class="content-pane active" data-pane="url">
@@ -60,7 +326,7 @@
           <label>URL เว็บไซต์ / ลิงก์ร้าน</label>
           <div class="input-wrapper">
             <i class="ph ph-globe"></i>
-            <input type="url" id="f-url" placeholder="https://example.com">
+            <input type="url" id="f-url" value="https://example.com" placeholder="https://example.com">
           </div>
         </div>
       </div>
@@ -74,16 +340,12 @@
 
       <div class="content-pane" data-pane="wifi">
         <div class="input-group">
-          <label>ชื่อเครือข่าย (SSID)</label>
+          <label>ชื่อ Wi-Fi (SSID)</label>
           <div class="input-wrapper"><i class="ph ph-router"></i><input type="text" id="f-wifi-ssid" placeholder="WiFi_Name"></div>
         </div>
         <div class="input-group">
           <label>รหัสผ่าน</label>
           <div class="input-wrapper"><i class="ph ph-lock-key"></i><input type="text" id="f-wifi-pass" placeholder="••••••••"></div>
-        </div>
-        <div class="input-group">
-          <label>ความปลอดภัย</label>
-          <select id="f-wifi-enc"><option value="WPA">WPA/WPA2/WPA3</option><option value="WEP">WEP</option><option value="nopass">ไม่มีรหัส</option></select>
         </div>
       </div>
 
@@ -93,59 +355,18 @@
           <div class="input-wrapper"><i class="ph ph-phone-call"></i><input type="tel" id="f-phone" placeholder="0812345678"></div>
         </div>
       </div>
-
-      <div class="content-pane" data-pane="sms">
-        <div class="input-group">
-          <label>เบอร์โทรศัพท์</label>
-          <div class="input-wrapper"><i class="ph ph-device-mobile"></i><input type="tel" id="f-sms-phone" placeholder="0812345678"></div>
-        </div>
-        <div class="input-group">
-          <label>ข้อความ SMS</label>
-          <textarea id="f-sms-text" placeholder="พิมพ์ข้อความ..."></textarea>
-        </div>
-      </div>
-
-      <div class="content-pane" data-pane="vcard">
-        <div class="input-group">
-          <label>ชื่อ-นามสกุล</label>
-          <div class="input-wrapper"><i class="ph ph-user"></i><input type="text" id="f-vc-first" placeholder="ชื่อ นามสกุล"></div>
-        </div>
-        <div class="input-group">
-          <label>ชื่อร้าน / องค์กร</label>
-          <div class="input-wrapper"><i class="ph ph-buildings"></i><input type="text" id="f-vc-org" placeholder="ชื่อบริษัท"></div>
-        </div>
-        <div class="input-group">
-          <label>เบอร์โทร</label>
-          <div class="input-wrapper"><i class="ph ph-phone"></i><input type="tel" id="f-vc-phone" placeholder="0812345678"></div>
-        </div>
-      </div>
     </section>
 
-    <!-- STEP 2: STYLING -->
     <section class="config-section">
-      <div class="section-header"><span class="step-num">02</span><h2>ธีมและสีสัน</h2></div>
-      <div class="preset-grid">
-        <button class="preset-btn active" data-preset="cyber" style="--p-color: #7C5CFF;" title="Cyber"></button>
-        <button class="preset-btn" data-preset="emerald" style="--p-color: #10B981;" title="Emerald"></button>
-        <button class="preset-btn" data-preset="sunset" style="--p-color: #F59E0B;" title="Sunset"></button>
-        <button class="preset-btn" data-preset="rose" style="--p-color: #F43F5E;" title="Rose"></button>
-      </div>
-      <div class="segmented-control" style="margin-top: 12px;">
-        <button class="active" data-fgmode="solid">สีทึบ</button>
-        <button data-fgmode="gradient">ไล่สี</button>
-      </div>
+      <div class="section-header"><span class="step-num">02</span><h2>สีสัน</h2></div>
       <div class="color-picker-list">
-        <div class="color-picker-item"><input type="color" id="c-fg1" value="#7C5CFF"><label for="c-fg1">สีลวดลายหลัก</label></div>
-        <div class="color-picker-item" id="row-fg2" style="display:none;"><input type="color" id="c-fg2" value="#10B981"><label for="c-fg2">สีไล่ระดับ</label></div>
-        <div class="color-picker-item"><input type="color" id="c-eye-frame" value="#FFFFFF"><label for="c-eye-frame">กรอบมุม</label></div>
-        <div class="color-picker-item"><input type="color" id="c-eye-ball" value="#7C5CFF"><label for="c-eye-ball">จุดกลางมุม</label></div>
-        <div class="color-picker-item"><input type="color" id="c-bg" value="#0B0B0F"><label for="c-bg">พื้นหลัง QR</label></div>
+        <div class="color-picker-item"><input type="color" id="c-fg1" value="#7C5CFF"><label for="c-fg1">สีลวดลาย</label></div>
+        <div class="color-picker-item"><input type="color" id="c-bg" value="#0B0B0F"><label for="c-bg">สีพื้นหลัง</label></div>
       </div>
     </section>
   </div>
 
-
-  <!-- COLUMN 2: LIVE PREVIEW STAGE (อยู่ตรงกลาง เห็นชัดทันที) -->
+  <!-- COLUMN 2: PREVIEW STAGE -->
   <main class="preview-stage">
     <div class="stage-card">
       <div class="stage-header">
@@ -156,28 +377,20 @@
       </div>
 
       <div class="canvas-wrapper" id="preview-card">
-        <canvas id="qr-canvas"></canvas>
-        <div class="empty-state" id="empty-msg" style="display:none;">
-          <i class="ph ph-warning-circle"></i>
-          <p>กรุณากรอกข้อมูลเพื่อสร้าง QR Code</p>
-        </div>
+        <canvas id="qr-canvas" width="300" height="300"></canvas>
       </div>
 
       <div class="action-bar">
-        <button class="btn btn-primary" id="btn-png" disabled>
+        <button class="btn btn-primary" id="btn-png">
           <i class="ph ph-download-simple"></i>
           <span>บันทึกรูปภาพ (PNG)</span>
         </button>
       </div>
-      
-      <div class="footer-note" id="ui-footer"></div>
     </div>
   </main>
 
-
-  <!-- COLUMN 3: SHAPES, LOGO & EXPORT -->
+  <!-- COLUMN 3: SHAPES & DECORATIONS -->
   <div class="sidebar">
-    <!-- STEP 3: SHAPES -->
     <section class="config-section">
       <div class="section-header"><span class="step-num">03</span><h2>รูปทรง (Shapes)</h2></div>
       <label class="field-label">รูปแบบลวดลาย</label>
@@ -186,56 +399,28 @@
         <div class="shape-card" data-dot="dots"><i class="ph-fill ph-circles-four"></i><span>วงกลม</span></div>
         <div class="shape-card" data-dot="rounded"><i class="ph-fill ph-app-window"></i><span>มน</span></div>
       </div>
-      <label class="field-label">รูปแบบกรอบมุมตา</label>
-      <div class="shape-grid" id="eyeframe-shapes">
-        <div class="shape-card active" data-eyeframe="square"><i class="ph ph-square"></i><span>เหลี่ยม</span></div>
-        <div class="shape-card" data-eyeframe="rounded"><i class="ph ph-bounding-box"></i><span>มน</span></div>
-        <div class="shape-card" data-eyeframe="circle"><i class="ph ph-circle"></i><span>วงกลม</span></div>
-      </div>
     </section>
 
-    <!-- STEP 4: LOGO & EXPORT -->
     <section class="config-section">
-      <div class="section-header"><span class="step-num">04</span><h2>โลโก้และความละเอียด</h2></div>
-      <div class="drop-zone" id="upload-box">
-        <i class="ph ph-cloud-arrow-up drop-zone-icon"></i>
-        <p>อัปโหลดโลโก้ร้าน</p>
-        <small id="upload-limit-text">ขนาดไม่เกิน 2MB (PNG, JPG)</small>
-      </div>
-      <input type="file" id="logo-input" accept="image/*" style="display:none;">
-
-      <div class="logo-preview-card" id="logo-preview-row" style="display:none;">
-        <img id="logo-preview-img" alt="Logo">
-        <span id="logo-preview-name">logo.png</span>
-        <button id="logo-remove"><i class="ph ph-trash"></i></button>
-      </div>
-
-      <label class="checkbox-container">
-        <input type="checkbox" id="logo-knockout" checked>
-        เว้นกรอบหลังโลโก้ (สแกนง่ายขึ้น)
-      </label>
-
-      <div class="range-group">
-        <div class="range-header">
-          <label>ความละเอียด</label>
-          <span id="res-value" class="res-badge">1000 × 1000 px</span>
-        </div>
-        <input type="range" id="res-slider" min="500" max="2400" step="100" value="1000">
+      <div class="section-header"><span class="step-num">04</span><h2>กรอบป้ายข้อความ (Badges)</h2></div>
+      <div class="decor-grid" id="badge-styles">
+        <div class="decor-card active" data-badge="none"><i class="ph ph-prohibit"></i><span>ไม่มี</span></div>
+        <div class="decor-card" data-badge="scan-me"><i class="ph ph-scan"></i><span>SCAN ME</span></div>
+        <div class="decor-card" data-badge="order-here"><i class="ph ph-shopping-bag"></i><span>ORDER</span></div>
       </div>
     </section>
   </div>
 
 </div>
 
-<!-- Script สำหรับกดสลับ Theme Light/Dark -->
 <script>
+  // 1. Theme Toggle Logic
   const toggleBtn = document.getElementById('theme-toggle');
   const themeIcon = document.getElementById('theme-icon');
   const htmlDoc = document.documentElement;
 
   toggleBtn.addEventListener('click', () => {
-    const currentTheme = htmlDoc.getAttribute('data-theme');
-    if (currentTheme === 'dark') {
+    if (htmlDoc.getAttribute('data-theme') === 'dark') {
       htmlDoc.setAttribute('data-theme', 'light');
       themeIcon.className = 'ph ph-sun';
     } else {
@@ -243,9 +428,127 @@
       themeIcon.className = 'ph ph-moon';
     }
   });
-</script>
 
-<script src="config.js"></script>
-<script src="script.js"></script>
+  // 2. Tabs Switcher Logic
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panes = document.querySelectorAll('.content-pane');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.getAttribute('data-type');
+      panes.forEach(pane => {
+        if (pane.getAttribute('data-pane') === target) {
+          pane.classList.add('active');
+        } else {
+          pane.classList.remove('active');
+        }
+      });
+      updateQRCode();
+    });
+  });
+
+  // 3. Shape & Badge Selectors Active State
+  function setupSelectors(selectorId) {
+    const cards = document.querySelectorAll(`#${selectorId} > div`);
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        updateQRCode();
+      });
+    });
+  }
+  setupSelectors('dot-shapes');
+  setupSelectors('badge-styles');
+
+  // 4. Basic QR Code Generator Core Logic
+  const canvas = document.getElementById('qr-canvas');
+  const ctx = canvas.getContext('2d');
+  const urlInput = document.getElementById('f-url');
+  const textInput = document.getElementById('f-text');
+  const wifiSsid = document.getElementById('f-wifi-ssid');
+  const wifiPass = document.getElementById('f-wifi-pass');
+  const phoneInput = document.getElementById('f-phone');
+  
+  const fgColorInput = document.getElementById('c-fg1');
+  const bgColorInput = document.getElementById('c-bg');
+
+  function getQRText() {
+    const activeTab = document.querySelector('.tab-btn.active').getAttribute('data-type');
+    if (activeTab === 'url') return urlInput.value || 'https://example.com';
+    if (activeTab === 'text') return textInput.value || 'Hello';
+    if (activeTab === 'wifi') return `WIFI:S:${wifiSsid.value};T:WPA;P:${wifiSsid.value};;`;
+    if (activeTab === 'phone') return `tel:${phoneInput.value}`;
+    return 'QR Studio Pro';
+  }
+
+  function updateQRCode() {
+    try {
+      const text = getQRText();
+      const qr = qrcode(0, 'M');
+      qr.addData(text);
+      qr.make();
+
+      const moduleCount = qr.getModuleCount();
+      const size = 300;
+      canvas.width = size;
+      canvas.height = size;
+
+      const tileSize = size / moduleCount;
+      const fgColor = fgColorInput.value;
+      const bgColor = bgColorInput.value;
+
+      // Draw Background
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, size, size);
+
+      // Check Active Dot Shape
+      const activeDot = document.querySelector('#dot-shapes .shape-card.active').getAttribute('data-dot');
+
+      // Draw Modules
+      ctx.fillStyle = fgColor;
+      for (let row = 0; row < moduleCount; row++) {
+        for (let col = 0; col < moduleCount; col++) {
+          if (qr.isDark(row, col)) {
+            const x = col * tileSize;
+            const y = row * tileSize;
+
+            if (activeDot === 'dots') {
+              ctx.beginPath();
+              ctx.arc(x + tileSize / 2, y + tileSize / 2, tileSize / 2.2, 0, Math.PI * 2);
+              ctx.fill();
+            } else if (activeDot === 'rounded') {
+              ctx.beginPath();
+              ctx.roundRect(x + 0.5, y + 0.5, tileSize - 1, tileSize - 1, tileSize / 3);
+              ctx.fill();
+            } else {
+              ctx.fillRect(x, y, tileSize, tileSize);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Event Listeners for Live Update
+  [urlInput, textInput, wifiSsid, wifiPass, phoneInput, fgColorInput, bgColorInput].forEach(el => {
+    if (el) el.addEventListener('input', updateQRCode);
+  });
+
+  // Download Button Action
+  document.getElementById('btn-png').addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'qr-code.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  // Initial Run
+  updateQRCode();
+</script>
 </body>
 </html>
