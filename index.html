@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="doc-title">QR Studio Pro</title>
+  <title id="doc-title">QR Studio Pro — NextGen QR Generator</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,16 +22,21 @@
 <body>
 
 <div class="app-container">
-  <!-- SIDEBAR CONFIGURATOR -->
-  <aside class="sidebar">
+  
+  <!-- COLUMN 1: Content & Theme Colors -->
+  <div class="sidebar">
     <div class="brand-header">
-      <div class="brand-icon">
-        <i class="ph ph-qr-code"></i>
+      <div class="brand-left">
+        <div class="brand-icon"><i class="ph ph-qr-code"></i></div>
+        <div class="brand-title">
+          <span id="ui-brand-name">QR Studio</span>
+          <span class="badge" id="ui-badge">PRO</span>
+        </div>
       </div>
-      <div class="brand-title">
-        <span id="ui-brand-name">QR Studio</span>
-        <span class="badge" id="ui-badge">PRO</span>
-      </div>
+      <!-- Theme Switcher Button -->
+      <button class="theme-toggle-btn" id="theme-toggle" title="สลับโหมดสว่าง/มืด">
+        <i class="ph ph-moon" id="theme-icon"></i>
+      </button>
     </div>
 
     <!-- STEP 1: CONTENT -->
@@ -50,7 +55,6 @@
         <button class="tab-btn" data-type="vcard"><i class="ph ph-identification-card"></i> นามบัตร</button>
       </div>
 
-      <!-- Content Inputs -->
       <div class="content-pane active" data-pane="url">
         <div class="input-group">
           <label>URL เว็บไซต์ / ลิงก์ร้าน</label>
@@ -64,52 +68,36 @@
       <div class="content-pane" data-pane="text">
         <div class="input-group">
           <label>ข้อความ</label>
-          <textarea id="f-text" placeholder="พิมพ์ข้อความที่ต้องการที่นี่..."></textarea>
+          <textarea id="f-text" placeholder="พิมพ์ข้อความที่ต้องการ..."></textarea>
         </div>
       </div>
 
       <div class="content-pane" data-pane="wifi">
         <div class="input-group">
           <label>ชื่อเครือข่าย (SSID)</label>
-          <div class="input-wrapper">
-            <i class="ph ph-router"></i>
-            <input type="text" id="f-wifi-ssid" placeholder="WiFi_Name">
-          </div>
+          <div class="input-wrapper"><i class="ph ph-router"></i><input type="text" id="f-wifi-ssid" placeholder="WiFi_Name"></div>
         </div>
         <div class="input-group">
           <label>รหัสผ่าน</label>
-          <div class="input-wrapper">
-            <i class="ph ph-lock-key"></i>
-            <input type="text" id="f-wifi-pass" placeholder="••••••••">
-          </div>
+          <div class="input-wrapper"><i class="ph ph-lock-key"></i><input type="text" id="f-wifi-pass" placeholder="••••••••"></div>
         </div>
         <div class="input-group">
-          <label>ระบบความปลอดภัย</label>
-          <select id="f-wifi-enc">
-            <option value="WPA">WPA / WPA2 / WPA3</option>
-            <option value="WEP">WEP</option>
-            <option value="nopass">ไม่ใช้รหัสผ่าน</option>
-          </select>
+          <label>ความปลอดภัย</label>
+          <select id="f-wifi-enc"><option value="WPA">WPA/WPA2/WPA3</option><option value="WEP">WEP</option><option value="nopass">ไม่มีรหัส</option></select>
         </div>
       </div>
 
       <div class="content-pane" data-pane="phone">
         <div class="input-group">
-          <label>หมายเลขโทรศัพท์</label>
-          <div class="input-wrapper">
-            <i class="ph ph-phone-call"></i>
-            <input type="tel" id="f-phone" placeholder="0812345678">
-          </div>
+          <label>เบอร์โทรศัพท์</label>
+          <div class="input-wrapper"><i class="ph ph-phone-call"></i><input type="tel" id="f-phone" placeholder="0812345678"></div>
         </div>
       </div>
 
       <div class="content-pane" data-pane="sms">
         <div class="input-group">
-          <label>หมายเลขโทรศัพท์</label>
-          <div class="input-wrapper">
-            <i class="ph ph-device-mobile"></i>
-            <input type="tel" id="f-sms-phone" placeholder="0812345678">
-          </div>
+          <label>เบอร์โทรศัพท์</label>
+          <div class="input-wrapper"><i class="ph ph-device-mobile"></i><input type="tel" id="f-sms-phone" placeholder="0812345678"></div>
         </div>
         <div class="input-group">
           <label>ข้อความ SMS</label>
@@ -120,107 +108,44 @@
       <div class="content-pane" data-pane="vcard">
         <div class="input-group">
           <label>ชื่อ-นามสกุล</label>
-          <div class="input-wrapper">
-            <i class="ph ph-user"></i>
-            <input type="text" id="f-vc-first" placeholder="ชื่อ นามสกุล">
-          </div>
+          <div class="input-wrapper"><i class="ph ph-user"></i><input type="text" id="f-vc-first" placeholder="ชื่อ นามสกุล"></div>
         </div>
         <div class="input-group">
           <label>ชื่อร้าน / องค์กร</label>
-          <div class="input-wrapper">
-            <i class="ph ph-buildings"></i>
-            <input type="text" id="f-vc-org" placeholder="ชื่อบริษัท">
-          </div>
+          <div class="input-wrapper"><i class="ph ph-buildings"></i><input type="text" id="f-vc-org" placeholder="ชื่อบริษัท"></div>
         </div>
         <div class="input-group">
-          <label>เบอร์โทรศัพท์</label>
-          <div class="input-wrapper">
-            <i class="ph ph-phone"></i>
-            <input type="tel" id="f-vc-phone" placeholder="0812345678">
-          </div>
+          <label>เบอร์โทร</label>
+          <div class="input-wrapper"><i class="ph ph-phone"></i><input type="tel" id="f-vc-phone" placeholder="0812345678"></div>
         </div>
       </div>
     </section>
 
     <!-- STEP 2: STYLING -->
     <section class="config-section">
-      <div class="section-header">
-        <span class="step-num">02</span>
-        <h2>ธีมและสีสัน</h2>
-      </div>
-
+      <div class="section-header"><span class="step-num">02</span><h2>ธีมและสีสัน</h2></div>
       <div class="preset-grid">
-        <button class="preset-btn active" data-preset="cyber" style="--p-color: #7C5CFF;" title="Neon Cyber"></button>
-        <button class="preset-btn" data-preset="emerald" style="--p-color: #10B981;" title="Emerald Green"></button>
-        <button class="preset-btn" data-preset="sunset" style="--p-color: #F59E0B;" title="Sunset Glow"></button>
-        <button class="preset-btn" data-preset="rose" style="--p-color: #F43F5E;" title="Rose Pink"></button>
+        <button class="preset-btn active" data-preset="cyber" style="--p-color: #7C5CFF;" title="Cyber"></button>
+        <button class="preset-btn" data-preset="emerald" style="--p-color: #10B981;" title="Emerald"></button>
+        <button class="preset-btn" data-preset="sunset" style="--p-color: #F59E0B;" title="Sunset"></button>
+        <button class="preset-btn" data-preset="rose" style="--p-color: #F43F5E;" title="Rose"></button>
       </div>
-
-      <div class="segmented-control" style="margin-top: 15px;">
-        <button class="active" data-fgmode="solid">สีทึบ (Solid)</button>
-        <button data-fgmode="gradient">ไล่สี (Gradient)</button>
+      <div class="segmented-control" style="margin-top: 12px;">
+        <button class="active" data-fgmode="solid">สีทึบ</button>
+        <button data-fgmode="gradient">ไล่สี</button>
       </div>
-
       <div class="color-picker-list">
-        <div class="color-picker-item">
-          <input type="color" id="c-fg1" value="#7C5CFF">
-          <label for="c-fg1">สีหลัก (ลวดลาย)</label>
-        </div>
-        <div class="color-picker-item" id="row-fg2" style="display:none;">
-          <input type="color" id="c-fg2" value="#2FD180">
-          <label for="c-fg2">สีไล่ระดับ</label>
-        </div>
-        <div class="color-picker-item">
-          <input type="color" id="c-eye-frame" value="#FFFFFF">
-          <label for="c-eye-frame">สีกรอบมุม (Eye Frame)</label>
-        </div>
-        <div class="color-picker-item">
-          <input type="color" id="c-eye-ball" value="#7C5CFF">
-          <label for="c-eye-ball">สีจุดกลางมุม (Eye Ball)</label>
-        </div>
-        <div class="color-picker-item">
-          <input type="color" id="c-bg" value="#0F0F15">
-          <label for="c-bg">สีพื้นหลัง</label>
-        </div>
+        <div class="color-picker-item"><input type="color" id="c-fg1" value="#7C5CFF"><label for="c-fg1">สีลวดลายหลัก</label></div>
+        <div class="color-picker-item" id="row-fg2" style="display:none;"><input type="color" id="c-fg2" value="#10B981"><label for="c-fg2">สีไล่ระดับ</label></div>
+        <div class="color-picker-item"><input type="color" id="c-eye-frame" value="#FFFFFF"><label for="c-eye-frame">กรอบมุม</label></div>
+        <div class="color-picker-item"><input type="color" id="c-eye-ball" value="#7C5CFF"><label for="c-eye-ball">จุดกลางมุม</label></div>
+        <div class="color-picker-item"><input type="color" id="c-bg" value="#0B0B0F"><label for="c-bg">พื้นหลัง QR</label></div>
       </div>
     </section>
+  </div>
 
-    <!-- STEP 3: SHAPES -->
-    <section class="config-section">
-      <div class="section-header">
-        <span class="step-num">03</span>
-        <h2>รูปทรง (Shapes)</h2>
-      </div>
 
-      <label class="field-label">รูปแบบลวดลาย</label>
-      <div class="shape-grid" id="dot-shapes">
-        <div class="shape-card active" data-dot="square">
-          <i class="ph-fill ph-squares-four"></i><span>เหลี่ยม</span>
-        </div>
-        <div class="shape-card" data-dot="dots">
-          <i class="ph-fill ph-circles-four"></i><span>วงกลม</span>
-        </div>
-        <div class="shape-card" data-dot="rounded">
-          <i class="ph-fill ph-app-window"></i><span>มน</span>
-        </div>
-      </div>
-
-      <label class="field-label">รูปแบบกรอบมุมตา</label>
-      <div class="shape-grid" id="eyeframe-shapes">
-        <div class="shape-card active" data-eyeframe="square">
-          <i class="ph ph-square"></i><span>เหลี่ยม</span>
-        </div>
-        <div class="shape-card" data-eyeframe="rounded">
-          <i class="ph ph-bounding-box"></i><span>มน</span>
-        </div>
-        <div class="shape-card" data-eyeframe="circle">
-          <i class="ph ph-circle"></i><span>วงกลม</span>
-        </div>
-      </div>
-    </section>
-  </aside>
-
-  <!-- MAIN CANVAS PREVIEW (ย้ายมาแทรกอยู่ตรงกลาง ระหว่างรูปทรง และโลโก้) -->
+  <!-- COLUMN 2: LIVE PREVIEW STAGE (อยู่ตรงกลาง เห็นชัดทันที) -->
   <main class="preview-stage">
     <div class="stage-card">
       <div class="stage-header">
@@ -249,44 +174,76 @@
     </div>
   </main>
 
-  <!-- SIDEBAR PART 2 (สำหรับส่วนโลโก้และความละเอียดที่อยู่ด้านล่างพรีวิว) -->
-  <aside class="sidebar" style="border-right: none; border-left: 1px solid var(--border-color);">
+
+  <!-- COLUMN 3: SHAPES, LOGO & EXPORT -->
+  <div class="sidebar">
+    <!-- STEP 3: SHAPES -->
+    <section class="config-section">
+      <div class="section-header"><span class="step-num">03</span><h2>รูปทรง (Shapes)</h2></div>
+      <label class="field-label">รูปแบบลวดลาย</label>
+      <div class="shape-grid" id="dot-shapes">
+        <div class="shape-card active" data-dot="square"><i class="ph-fill ph-squares-four"></i><span>เหลี่ยม</span></div>
+        <div class="shape-card" data-dot="dots"><i class="ph-fill ph-circles-four"></i><span>วงกลม</span></div>
+        <div class="shape-card" data-dot="rounded"><i class="ph-fill ph-app-window"></i><span>มน</span></div>
+      </div>
+      <label class="field-label">รูปแบบกรอบมุมตา</label>
+      <div class="shape-grid" id="eyeframe-shapes">
+        <div class="shape-card active" data-eyeframe="square"><i class="ph ph-square"></i><span>เหลี่ยม</span></div>
+        <div class="shape-card" data-eyeframe="rounded"><i class="ph ph-bounding-box"></i><span>มน</span></div>
+        <div class="shape-card" data-eyeframe="circle"><i class="ph ph-circle"></i><span>วงกลม</span></div>
+      </div>
+    </section>
+
     <!-- STEP 4: LOGO & EXPORT -->
     <section class="config-section">
-      <div class="section-header">
-        <span class="step-num">04</span>
-        <h2>โลโก้และความละเอียด</h2>
-      </div>
-
+      <div class="section-header"><span class="step-num">04</span><h2>โลโก้และความละเอียด</h2></div>
       <div class="drop-zone" id="upload-box">
         <i class="ph ph-cloud-arrow-up drop-zone-icon"></i>
-        <p>คลิกเพื่ออัปโหลดโลโก้ร้าน</p>
+        <p>อัปโหลดโลโก้ร้าน</p>
         <small id="upload-limit-text">ขนาดไม่เกิน 2MB (PNG, JPG)</small>
       </div>
       <input type="file" id="logo-input" accept="image/*" style="display:none;">
 
       <div class="logo-preview-card" id="logo-preview-row" style="display:none;">
-        <img id="logo-preview-img" src="" alt="Logo Preview">
+        <img id="logo-preview-img" alt="Logo">
         <span id="logo-preview-name">logo.png</span>
-        <button id="logo-remove"><i class="ph ph-trash"></i> ลบ</button>
+        <button id="logo-remove"><i class="ph ph-trash"></i></button>
       </div>
 
       <label class="checkbox-container">
         <input type="checkbox" id="logo-knockout" checked>
-        <span class="checkmark"></span>
-        เว้นกรอบหลังโลโก้ (ทำให้สแกนติดง่ายขึ้น)
+        เว้นกรอบหลังโลโก้ (สแกนง่ายขึ้น)
       </label>
 
       <div class="range-group">
         <div class="range-header">
-          <label>ความละเอียดไฟล์ภาพ</label>
+          <label>ความละเอียด</label>
           <span id="res-value" class="res-badge">1000 × 1000 px</span>
         </div>
         <input type="range" id="res-slider" min="500" max="2400" step="100" value="1000">
       </div>
     </section>
-  </aside>
+  </div>
+
 </div>
+
+<!-- Script สำหรับกดสลับ Theme Light/Dark -->
+<script>
+  const toggleBtn = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const htmlDoc = document.documentElement;
+
+  toggleBtn.addEventListener('click', () => {
+    const currentTheme = htmlDoc.getAttribute('data-theme');
+    if (currentTheme === 'dark') {
+      htmlDoc.setAttribute('data-theme', 'light');
+      themeIcon.className = 'ph ph-sun';
+    } else {
+      htmlDoc.setAttribute('data-theme', 'dark');
+      themeIcon.className = 'ph ph-moon';
+    }
+  });
+</script>
 
 <script src="config.js"></script>
 <script src="script.js"></script>
